@@ -1,8 +1,9 @@
 var heightOfViewPort, widthOfViewPort; // dimension of viewport in pixels
-const BLOCK_SiZE = 20; // block size in pixels
+const BLOCK_SiZE = 25; // block size in pixels
 var height, width; // grid dimension
 var extraHeightPixels, extraWidthPixels;
 var DIRECTIONS = ['R', 'L', 'U', 'D'];
+const APPLE = "🍎";
 
 
 // Snake Details
@@ -12,6 +13,11 @@ var snake;
 // - posX = row in grid
 // - posY = coloumn in grid
 // - dir = current direction of snake
+
+
+// Apple Details
+var apple; 
+// posX, posY
 
 
 $(document).ready(loadGame());
@@ -48,8 +54,13 @@ function loadGame() {
     for(var i = 0; i < height; i++) {
         for(var j = 0; j < width; j++) {
             var num = i * width + j;
-            var pix = createDivBox(BLOCK_SiZE, BLOCK_SiZE, "White", "div" + num);
-            document.getElementById("main").appendChild(pix);
+            if((i + j) % 2 == 0) {
+                var pix = createDivBox(BLOCK_SiZE, BLOCK_SiZE, "White", "div" + num);
+                document.getElementById("main").appendChild(pix);
+            } else {
+                var pix = createDivBox(BLOCK_SiZE, BLOCK_SiZE, "#f0f0f0", "div" + num);
+                document.getElementById("main").appendChild(pix);
+            }
         }
         var pix = createDivBox(BLOCK_SiZE, extraWidthPixels, "Black", null);
         document.getElementById("main").appendChild(pix);
@@ -64,6 +75,8 @@ function loadGame() {
     let tempHead = {posX : Math.floor(height / 2), posY: Math.floor(width / 2), dir : 'L'};
     snake.push(tempHead);
     showSnake();
+    apple = {posX : Math.floor(height / 4), posY: Math.floor(width / 4)} ;
+    showApple();
 }
 
 function increaseSize() {
@@ -73,10 +86,16 @@ function increaseSize() {
 function showSnake() {
     for(var i = 0; i < snake.length; i++) {
         num = snake[i].posX * width + snake[i].posY;
-        console.log(num);
         $("#div" + num).css({
             "background-color": "red",
-            "border-radius": "6px"
+            "border-radius": "8px"
         });
     }
+}
+function showApple() {
+    num = apple.posX * width + apple.posY;
+    $("#div" + num).css({
+        "text-align": "center",
+    });
+    $("#div" + num).text(APPLE);
 }
