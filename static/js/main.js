@@ -2,6 +2,17 @@ var heightOfViewPort, widthOfViewPort; // dimension of viewport in pixels
 const BLOCK_SiZE = 20; // block size in pixels
 var height, width; // grid dimension
 var extraHeightPixels, extraWidthPixels;
+var DIRECTIONS = ['R', 'L', 'U', 'D'];
+
+
+// Snake Details
+var snake;
+// Attributes of Snake
+// - snake[0] is always head
+// - posX = row in grid
+// - posY = coloumn in grid
+// - dir = current direction of snake
+
 
 $(document).ready(loadGame());
 function getRandomColour() {
@@ -36,7 +47,8 @@ function loadGame() {
     // initialise divs
     for(var i = 0; i < height; i++) {
         for(var j = 0; j < width; j++) {
-            var pix = createDivBox(BLOCK_SiZE, BLOCK_SiZE, "White", "div" + i * width + j);
+            var num = i * width + j;
+            var pix = createDivBox(BLOCK_SiZE, BLOCK_SiZE, "White", "div" + num);
             document.getElementById("main").appendChild(pix);
         }
         var pix = createDivBox(BLOCK_SiZE, extraWidthPixels, "Black", null);
@@ -48,4 +60,23 @@ function loadGame() {
     }
     var pix = createDivBox(extraHeightPixels, extraWidthPixels, "Black", null);
     document.getElementById("main").appendChild(pix);
+    snake = [];
+    let tempHead = {posX : Math.floor(height / 2), posY: Math.floor(width / 2), dir : 'L'};
+    snake.push(tempHead);
+    showSnake();
+}
+
+function increaseSize() {
+    
+}
+
+function showSnake() {
+    for(var i = 0; i < snake.length; i++) {
+        num = snake[i].posX * width + snake[i].posY;
+        console.log(num);
+        $("#div" + num).css({
+            "background-color": "red",
+            "border-radius": "6px"
+        });
+    }
 }
