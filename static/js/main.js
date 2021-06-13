@@ -1,3 +1,8 @@
+var heightOfViewPort, widthOfViewPort; // dimension of viewport in pixels
+const BLOCK_SiZE = 20; // block size in pixels
+var height, width; // grid dimension
+var extraHeightPixels, extraWidthPixels;
+
 $(document).ready(loadGame());
 function getRandomColour() {
     var letters = '0123456789ABCDEF';
@@ -7,21 +12,40 @@ function getRandomColour() {
     }
     return color;
 }
+
+function createDivBox(H, W, color, id) {
+    var pix = document.createElement("div");
+    pix.style.height = H + "px";
+    pix.style.width = W + "px";
+    pix.style.float = "left";
+    pix.style.backgroundColor = color;
+    if(id != null) {
+        pix.id = id;
+    }
+    return pix;
+}
+
 function loadGame() {
-    const Height = $(document).height();
-    const Width = $(document).width();
-    // $("#main").html("Documents Height = " + Height + " px and width = " + Width + " px");
-    var numPix = 100;
-    var unitPixHeight = Height / numPix;
-    var unitPixWidth = Width / numPix;
-    for(var i = 0; i < numPix; i++) {
-        for(var j = 0; j < numPix; j++) {
-            var pix = document.createElement("div");
-            pix.style.height = unitPixHeight + "px";
-            pix.style.width = unitPixWidth + "px";
-            pix.style.float = "left";
-            pix.style.backgroundColor = getRandomColour();
+    heightOfViewPort = $(document).height();
+    widthOfViewPort = $(document).width();
+    console.log("Documents Height = " + heightOfViewPort + " px and width = " + widthOfViewPort + " px" + "total pixels = " + heightOfViewPort * widthOfViewPort);
+    height = Math.floor(heightOfViewPort / BLOCK_SiZE);
+    width = Math.floor(widthOfViewPort / BLOCK_SiZE);
+    extraHeightPixels = heightOfViewPort % BLOCK_SiZE; 
+    extraWidthPixels = widthOfViewPort % BLOCK_SiZE;
+    // initialise divs
+    for(var i = 0; i < height; i++) {
+        for(var j = 0; j < width; j++) {
+            var pix = createDivBox(BLOCK_SiZE, BLOCK_SiZE, "White", "div" + i * width + j);
             document.getElementById("main").appendChild(pix);
         }
+        var pix = createDivBox(BLOCK_SiZE, extraWidthPixels, "Black", null);
+        document.getElementById("main").appendChild(pix);
     }
+    for(var i = 0; i < width; i++) {
+        var pix = createDivBox(extraHeightPixels, BLOCK_SiZE, "Black", null);
+        document.getElementById("main").appendChild(pix);
+    }
+    var pix = createDivBox(extraHeightPixels, extraWidthPixels, "Black", null);
+    document.getElementById("main").appendChild(pix);
 }
