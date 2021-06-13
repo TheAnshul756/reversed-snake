@@ -85,7 +85,6 @@ function loadGame() {
     count = 0;
     var intervalId = window.setInterval(function(){
         getNextSnakePosition();
-        // console.log(snake);
         count += 1;
         if(count % 10 == 0) {
             increaseSize();
@@ -111,24 +110,21 @@ function showSnake() {
 }
 
 window.addEventListener("keydown", function(event) {
-    console.log('KeyPress');
     var move = 'U';
-    if(event.code == "ArrowDown") {
+    if(event.code == "ArrowDown" || event.code == "KeyS") {
         move = 'D';
-    } else if(event.code == "ArrowLeft") {
+    } else if(event.code == "ArrowLeft" || event.code == "KeyA") {
         move = 'L';
-    } else if(event.code == "ArrowRight") {
+    } else if(event.code == "ArrowRight" || event.code == "KeyD") {
         move = 'R';
-    } else if(event.code == "ArrowUp") {
+    } else if(event.code == "ArrowUp" || event.code == "KeyW") {
         move = 'U';
     } else {
         return;
     }
-    console.log("key Press " + move);
     var nextCordinate = findNextCoordinate(apple.posX, apple.posY, move)
     if(!checkColision(nextCordinate)) {
-        // loadGame();
-        alert("You Lose Sucker");
+        declareWinner('Snake');
     }
     clearAppleshow(apple);
     apple.posX = nextCordinate.posX;
@@ -186,6 +182,9 @@ function checkColision(nextCoordinates) {
 }
 
 function performMove(nextCoordinates, move) {
+    if(nextCoordinates.posX == apple.posX && nextCoordinates.posY == apple.posY) {
+        declareWinner('Snake');
+    }
     clearSnaketail(snake[snake.length - 1]);
     for(var i = snake.length - 1; i > 0; i--) {
         snake[i].posX = snake[i - 1].posX;
@@ -200,7 +199,7 @@ function performMove(nextCoordinates, move) {
 
 function getNextSnakePosition() {
     var possibleMoves;
-    if(Math.abs(apple.posX - snake[0].posX) < Math.abs(apple.posY - snake[0].posY) && Math.abs(apple.posX - snake[0].posX) != 0) {
+    if(Math.abs(apple.posX - snake[0].posX) > Math.abs(apple.posY - snake[0].posY)) {
         if(apple.posX > snake[0].posX) {
             possibleMoves = "DLRU";
         } else {
@@ -213,6 +212,7 @@ function getNextSnakePosition() {
             possibleMoves = "RDUL";
         }
     }
+    console.log(possibleMoves, Math.abs(apple.posX - snake[0].posX), Math.abs(apple.posY - snake[0].posY));
     for(var i = 0; i < possibleMoves.length; i++) {
         var nextCoordinates = findNextCoordinate(snake[0].posX, snake[0].posY, possibleMoves[i]);
         if(checkColision(nextCoordinates)) {
@@ -221,4 +221,13 @@ function getNextSnakePosition() {
         }
     }
     // Apple Win Snake Can't move
+    declareWinner('Apple');
+}
+
+function declareWinner(winner) {
+    if(winner == 'Snake') {
+        if(!alert('You Lose Sucker!!!')){window.location.reload();}
+    } else {
+        if('Wow! You beat the invincible Snake'){window.location.reload();}
+    }
 }
