@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reversed Snake</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+            body {
+                margin: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id = "main">
+
+        </div>
+        <script>
+            $(document).ready(loadGame());
+            function getRandomColour() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            function loadGame() {
+                const Height = $(document).height();
+                const Width = $(document).width();
+                // $("#main").html("Documents Height = " + Height + " px and width = " + Width + " px");
+                var numPix = 100;
+                var unitPixHeight = Height / numPix;
+                var unitPixWidth = Width / numPix;
+                for(var i = 0; i < numPix; i++) {
+                    for(var j = 0; j < numPix; j++) {
+                        var pix = document.createElement("div");
+                        pix.style.height = unitPixHeight + "px";
+                        pix.style.width = unitPixWidth + "px";
+                        pix.style.float = "left";
+                        pix.style.backgroundColor = getRandomColour();
+                        document.getElementById("main").appendChild(pix);
+                    }
+                }
+            }
+        </script>
+    </body>
+</html
