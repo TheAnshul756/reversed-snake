@@ -20,8 +20,21 @@ var apple;
 // posX, posY
 var count;
 
+$('#gear').hover(
+    function() { $(this).addClass('fa-spin') },
+    function() { $(this).removeClass('fa-spin') }
+)
 
 $(document).ready(loadGame());
+
+//listen for window resize event
+window.addEventListener('resize', function(event){
+    // console.log("Hello");
+    $('#main').empty();
+    loadGame(); 
+});
+
+
 function getRandomColour() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -86,6 +99,7 @@ function loadGame() {
     var intervalId = window.setInterval(function(){
         getNextSnakePosition();
         count += 1;
+        $('#score').text(count + '')
         if(count % 10 == 0) {
             increaseSize();
         }

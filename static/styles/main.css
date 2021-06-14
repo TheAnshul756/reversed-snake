@@ -1,5 +1,33 @@
 body {
     margin: 0px;
+}
+
+#main {
+    z-index: 0;
     text-align: center;
     font-size: 21px;
+}
+
+#menu {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+}
+
+#score {
+    float: left;
+    width: 47%;
+    text-align: right;
+    color : black;
+    text-shadow: 2px 7px 5px rgba(0,0,0,0.3), 0px -4px 10px rgba(255,255,255,0.3);
+    font-size: 50px;
+    padding-right: 3%;
+}
+
+#setting {
+    float: left;
+    width: 47%;
+    font-size: 50px;
+    text-align: left;
+    padding-left: 3%;
 }
