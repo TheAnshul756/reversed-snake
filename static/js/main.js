@@ -32,21 +32,18 @@ $(document).ready(loadGame());
 $('#play-pause').click(function() {
     if(gameState == 'pause') {
         gameState = 'play';
-        let btn = document.getElementById('play-pause');
-        btn.src = "./static/img/pause.png";
-        btn.alt = 'pause';
+        $('#play-pause').removeClass('fa-play-circle-o');
+        $('#play-pause').addClass('fa-pause-circle-o');
         intervalId = window.setInterval(tempGameStart, 80);
     } else {
-        let btn = document.getElementById('play-pause');
-        btn.src = "./static/img/play.png";
-        btn.alt = 'play';
+        $('#play-pause').removeClass('fa-pause-circle-o');
+        $('#play-pause').addClass('fa-play-circle-o');
         gameState = 'pause';
         clearInterval(intervalId);
     }
 });
 //listen for window resize event
 window.addEventListener('resize', function(event){
-    // console.log("Hello");
     $('#main').empty();
     loadGame(); 
 });
@@ -247,7 +244,6 @@ function getNextSnakePosition() {
             possibleMoves = "RDUL";
         }
     }
-    console.log(possibleMoves, Math.abs(apple.posX - snake[0].posX), Math.abs(apple.posY - snake[0].posY));
     for(var i = 0; i < possibleMoves.length; i++) {
         var nextCoordinates = findNextCoordinate(snake[0].posX, snake[0].posY, possibleMoves[i]);
         if(checkColision(nextCoordinates)) {
