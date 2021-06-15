@@ -4,6 +4,8 @@ var height, width; // grid dimension
 var extraHeightPixels, extraWidthPixels;
 var DIRECTIONS = ['R', 'L', 'U', 'D'];
 const APPLE = "🍎";
+var gameState = 'pause';
+var intervalId;
 
 
 // Snake Details
@@ -27,6 +29,21 @@ $('#gear').hover(
 
 $(document).ready(loadGame());
 
+$('#play-pause').click(function() {
+    if(gameState == 'pause') {
+        gameState = 'play';
+        let btn = document.getElementById('play-pause');
+        btn.src = "./static/img/pause.png";
+        btn.alt = 'pause';
+        intervalId = window.setInterval(tempGameStart, 80);
+    } else {
+        let btn = document.getElementById('play-pause');
+        btn.src = "./static/img/play.png";
+        btn.alt = 'play';
+        gameState = 'pause';
+        clearInterval(intervalId);
+    }
+});
 //listen for window resize event
 window.addEventListener('resize', function(event){
     // console.log("Hello");
@@ -96,15 +113,16 @@ function loadGame() {
     console.log(snake);
     showSnake();
     count = 0;
-    var intervalId = window.setInterval(function(){
-        getNextSnakePosition();
-        count += 1;
-        $('#score').text(count + '')
-        if(count % 10 == 0) {
-            increaseSize();
-        }
-        showSnake();
-    }, 80);
+}
+
+function tempGameStart(){
+    getNextSnakePosition();
+    count += 1;
+    $('#score').text(count + '')
+    if(count % 10 == 0) {
+        increaseSize();
+    }
+    showSnake();
 }
 
 function increaseSize() {
@@ -124,6 +142,9 @@ function showSnake() {
 }
 
 window.addEventListener("keydown", function(event) {
+    if(gameState == 'pause') {
+        return;
+    }
     var move = 'U';
     if(event.code == "ArrowDown" || event.code == "KeyS") {
         move = 'D';
