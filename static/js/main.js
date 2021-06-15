@@ -6,7 +6,7 @@ var DIRECTIONS = ['R', 'L', 'U', 'D'];
 const APPLE = "🍎";
 var gameState = 'pause';
 var intervalId;
-
+var snakeCol;
 
 // Snake Details
 var snake;
@@ -27,29 +27,22 @@ $('#gear').hover(
     function() { $(this).removeClass('fa-spin') }
 )
 
-$(document).ready(loadGame());
+$(document).ready(loadGame);
 
-$('#play-pause').click(function() {
-    if(gameState == 'pause') {
-        gameState = 'play';
-        $('#play-pause').removeClass('fa-play-circle-o');
-        $('#play-pause').addClass('fa-pause-circle-o');
-        intervalId = window.setInterval(tempGameStart, 80);
-    } else {
-        $('#play-pause').removeClass('fa-pause-circle-o');
-        $('#play-pause').addClass('fa-play-circle-o');
-        gameState = 'pause';
-        clearInterval(intervalId);
-    }
-});
+$('#play-pause').click(changeGameState);
+
+
 //listen for window resize event
-window.addEventListener('resize', function(event){
+window.addEventListener('resize', reloadGame);
+
+function reloadGame() {
     $('#main').empty();
-    loadGame(); 
-});
+    loadGame();
+}
 
 
 function getRandomColour() {
+    console.log("WTF");
     var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++) {
@@ -100,6 +93,7 @@ function loadGame() {
     var pix = createDivBox(extraHeightPixels, extraWidthPixels, "Black", null);
     document.getElementById("main").appendChild(pix);
     snake = [];
+    snakeCol = getRandomColour();
     let tempHead = {posX : Math.floor(height / 2), posY: Math.floor(width / 2), dir : 'R'};
     snake.push(tempHead);
     showSnake();
@@ -110,6 +104,20 @@ function loadGame() {
     console.log(snake);
     showSnake();
     count = 0;
+}
+
+function changeGameState() {
+    if(gameState == 'pause') {
+        gameState = 'play';
+        $('#play-pause').removeClass('fa-play-circle-o');
+        $('#play-pause').addClass('fa-pause-circle-o');
+        intervalId = window.setInterval(tempGameStart, 80);
+    } else {
+        $('#play-pause').removeClass('fa-pause-circle-o');
+        $('#play-pause').addClass('fa-play-circle-o');
+        gameState = 'pause';
+        clearInterval(intervalId);
+    }
 }
 
 function tempGameStart(){
@@ -132,13 +140,16 @@ function showSnake() {
     for(var i = 0; i < snake.length; i++) {
         num = snake[i].posX * width + snake[i].posY;
         $("#div" + num).css({
-            "background-color": "red",
+            "background-color": snakeCol,
             "border-radius": "8px"
         });
     }
 }
 
 window.addEventListener("keydown", function(event) {
+    if(event.code == "Enter") {
+        changeGameState();
+    }
     if(gameState == 'pause') {
         return;
     }
