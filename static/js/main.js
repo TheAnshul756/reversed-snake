@@ -42,7 +42,6 @@ function reloadGame() {
 
 
 function getRandomColour() {
-    console.log("WTF");
     var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++) {
@@ -93,10 +92,10 @@ function loadGame() {
     var pix = createDivBox(extraHeightPixels, extraWidthPixels, "Black", null);
     document.getElementById("main").appendChild(pix);
     snake = [];
-    snakeCol = getRandomColour();
+    snakeCol = 'red';
     let tempHead = {posX : Math.floor(height / 2), posY: Math.floor(width / 2), dir : 'R'};
     snake.push(tempHead);
-    showSnake();
+    // showSnake();
     apple = {posX : Math.floor(height / 4), posY: Math.floor(width / 4)} ;
     showApple();
     increaseSize();
@@ -137,8 +136,13 @@ function increaseSize() {
 }
 
 function showSnake() {
-    for(var i = 0; i < snake.length; i++) {
+    var num = snake[0].posX * width + snake[0].posY;
+    var img = './static/img/Head' + snake[0].dir + '.png';
+    $('#div' + num).append("<img width = '25px' height = '25px' src = '" + img + "'/>");
+    // console.log(num);
+    for(var i = 1; i < snake.length; i++) {
         num = snake[i].posX * width + snake[i].posY;
+        // console.log(num);
         $("#div" + num).css({
             "background-color": snakeCol,
             "border-radius": "8px"
@@ -189,6 +193,12 @@ function clearSnaketail(pos) {
     $("#div" + num).css({
         "background-color": col,
         "border-radius": "0px"
+    });
+    num = snake[0].posX * width + snake[0].posY;
+    $('#div' + num).empty();
+    $("#div" + num).css({
+        "background-color": snakeCol,
+        "border-radius": "8px"
     });
 }
 

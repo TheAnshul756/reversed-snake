@@ -45,3 +45,7 @@ body {
 #play-pause {
     font-size: 50px;
 }
+
+.icon-HeadR:before {
+    content: "\e900";
+  }
